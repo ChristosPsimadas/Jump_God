@@ -128,8 +128,7 @@ public class PlayScreen implements Screen
         //Makes it such that the camera follows the player, but only in multiple-of-4 increments
         //For example, if mario is at position 3, then the remainder is 3. The game cam gets set to 2 + 3 - 3, because
         //Mario has not left the screen yet since leaving the screen means passing the 4th mark.
-        remainder = (int) player.b2body.getPosition().x % 4;
-        gameCam.position.x = 2 + (int) player.b2body.getPosition().x - remainder;
+        gameCam.position.x = 2 + (int) player.b2body.getPosition().x - (int) player.b2body.getPosition().x % 4;
         
         
         
