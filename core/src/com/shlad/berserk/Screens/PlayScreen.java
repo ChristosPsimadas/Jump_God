@@ -45,6 +45,7 @@ public class PlayScreen implements Screen
     private Box2DDebugRenderer b2dr;
     
     private Mario player;
+    private int remainder;
     
     
     
@@ -65,7 +66,6 @@ public class PlayScreen implements Screen
         //Set gamecam to be centered at the start of the map
         //still should use this even tho its centered on mario because it centers the y height
         gameCam.position.set(gamePort.getWorldWidth() / 2.0f, gamePort.getWorldHeight() / 2.0f, 0);
-        
         
         //Gravity , sleep objects at rest
         world = new World(new Vector2(0, -10), true);
@@ -114,17 +114,23 @@ public class PlayScreen implements Screen
         //user input first
         handleInput(deltaTime);
         
-        //gameCam.position.x = player.b2body.getPosition().x;
-        //if you want the cam to track the y as well then do
-        //position.y = getPos.y
-    
-        System.out.println("Game cam: " + gameCam.position.x);
-        System.out.println("Player  : " + player.b2body.getPosition().x);
         
-        if (gameCam.position.x < player.b2body.getPosition().x - 2.0)
-        {
-            gameCam.position.x += 4.0;
-        }
+//      gameCam.position.x = player.b2body.getPosition().x;
+//      if you want the cam to track the y as well then do
+//      position.y = getPos.y
+        
+//        if (gameCam.position.x < player.b2body.getPosition().x - 2.0)
+//        {
+//            gameCam.position.x += 4.0;
+//        }
+        
+        
+        //Makes it such that the camera follows the player, but only in multiple-of-4 increments
+        //For example, if mario is at position 3, then the remainder is 3. The game cam gets set to 2 + 3 - 3, because
+        //Mario has not left the screen yet since leaving the screen means passing the 4th mark.
+        remainder = (int) player.b2body.getPosition().x % 4;
+        gameCam.position.x = 2 + (int) player.b2body.getPosition().x - remainder;
+        
         
         
         //60 fps, how many times to calculate velocity and position
@@ -140,6 +146,9 @@ public class PlayScreen implements Screen
     {
         //separate update logic from render
         update(delta);
+    
+        System.out.println("Game cam: " + gameCam.position.x);
+        System.out.println("Player  : " + player.b2body.getPosition().x);
         
         //Clear the screen and make it light blue
         Gdx.gl.glClearColor(0.4f, 0.4f, 0.8f, 1);
