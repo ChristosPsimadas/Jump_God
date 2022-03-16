@@ -1,6 +1,5 @@
 package com.shlad.berserk.Sprites;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -12,6 +11,7 @@ import com.shlad.berserk.Screens.PlayScreen;
 
 public class Mario extends Sprite
 {
+
     public enum AnimationState {FALLING, JUMPING, STANDING, RUNNING};
     public AnimationState currentState;
     public AnimationState previousState;
@@ -52,7 +52,7 @@ public class Mario extends Sprite
         
         setBounds(0, 0, 16 / Berserk.PPM, 16 / Berserk.PPM);
         setRegion(marioStand);
-        //mario extends sprite which extends Textureregion so it fulfills the req because it takes a textureregion
+        //mario extends sprite which extends Texture region, so it fulfills the req because it takes a textureregion
     }
     
     public void update(float dt)
@@ -128,7 +128,7 @@ public class Mario extends Sprite
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(6 / Berserk.PPM);
-        
+
         fdef.shape = shape;
         b2body.createFixture(fdef);
         

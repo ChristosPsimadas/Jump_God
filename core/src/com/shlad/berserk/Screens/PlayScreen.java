@@ -2,6 +2,7 @@ package com.shlad.berserk.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -45,8 +46,11 @@ public class PlayScreen implements Screen
     private Box2DDebugRenderer b2dr;
     
     private Mario player;
-    
-    
+
+    private float xImpulseJump;
+    private float yImpulseJump;
+
+
     
     public PlayScreen(Berserk game)
     {
@@ -92,17 +96,30 @@ public class PlayScreen implements Screen
         {
             player.b2body.applyLinearImpulse(new Vector2(0, 4f), player.b2body.getWorldCenter(), true);
         }
-        
+
         if (Gdx.input.isKeyPressed(Input.Keys.D) && player.b2body.getLinearVelocity().x <= 2)
         {
             player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
         }
-    
+
         if (Gdx.input.isKeyPressed(Input.Keys.A) && player.b2body.getLinearVelocity().x >= -2)
         {
             player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
         }
-        
+
+//        if (Gdx.input.isKeyPressed(Input.Keys.D) && xImpulseJump < 5.0 && (player.b2body.getLinearVelocity().x != 0))
+//        {
+//            xImpulseJump += 1 * deltaTime;
+//            yImpulseJump += 2 * deltaTime;
+//        }
+//        else if (keyUp(Input.Keys.D))
+//        {
+//            player.b2body.applyLinearImpulse(new Vector2(xImpulseJump, yImpulseJump), player.b2body.getWorldCenter(), true);
+//            xImpulseJump = 0;
+//            yImpulseJump = 0;
+//        }
+
+
     }
     
     //update the game world
@@ -111,7 +128,7 @@ public class PlayScreen implements Screen
         player.update(deltaTime);
         //user input first
         handleInput(deltaTime);
-        
+
         
 //      gameCam.position.x = player.b2body.getPosition().x;
 //      if you want the cam to track the y as well then do
