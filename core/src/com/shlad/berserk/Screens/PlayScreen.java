@@ -45,8 +45,6 @@ public class PlayScreen implements Screen
     private Box2DDebugRenderer b2dr;
     
     private Mario player;
-    private int remainder;
-    
     
     
     
@@ -145,9 +143,6 @@ public class PlayScreen implements Screen
     {
         //separate update logic from render
         update(delta);
-    
-        System.out.println("Game cam: " + gameCam.position.x);
-        System.out.println("Player  : " + player.b2body.getPosition().x);
         
         //Clear the screen and make it light blue
         Gdx.gl.glClearColor(0.4f, 0.4f, 0.8f, 1);
