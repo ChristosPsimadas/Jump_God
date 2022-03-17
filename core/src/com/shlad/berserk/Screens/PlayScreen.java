@@ -49,6 +49,11 @@ public class PlayScreen implements Screen
 
     private float xImpulseJump;
     private float yImpulseJump;
+    
+    private final float maxXJumpvelocity = 5f;
+    private final float maxYJumpvelocity = 4.8f;
+    
+    private String previousKeyState = "released";
 
 
     
@@ -92,33 +97,65 @@ public class PlayScreen implements Screen
     
     public void handleInput(float deltaTime)
     {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.W))
+        //No moving in the air
+
+        if (Gdx.input.isKeyPressed(Input.Keys.D) && (player.b2body.getLinearVelocity().x <= 1.8f) && (!player.isJumping()) && (player.b2body.getLinearVelocity().y == 0))
         {
-            player.b2body.applyLinearImpulse(new Vector2(0, 4f), player.b2body.getWorldCenter(), true);
+            //player.b2body.applyLinearImpulse(new Vector2(0.13f, 0), player.b2body.getWorldCenter(), true);
+            
+            //Move a set speed, no acceleration
+            player.b2body.setLinearVelocity(new Vector2(0.7f, 0));
         }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.D) && player.b2body.getLinearVelocity().x <= 2)
+    
+    
+        if (Gdx.input.isKeyPressed(Input.Keys.A) && (player.b2body.getLinearVelocity().x >= -1.8f) && (!player.isJumping()) && (player.b2body.getLinearVelocity().y == 0))
         {
-            player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
+            //player.b2body.applyLinearImpulse(new Vector2(-0.13f, 0), player.b2body.getWorldCenter(), true);
+            
+            //move a set speed, no acceleration
+            player.b2body.setLinearVelocity(new Vector2(-0.7f, 0));
         }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.A) && player.b2body.getLinearVelocity().x >= -2)
+        
+        
+        if (Gdx.input.isKeyPressed(Input.Keys.W) && (player.b2body.getLinearVelocity().y == 0))
         {
-            player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+            //Make the setJumping boolean true
+            //So that you cant move left or right when charging your jump
+            player.setJumping(true);
+            
+            //Make your character stop completely in place when charging a jump
+            player.b2body.setLinearVelocity(0,0);
+            
+            //This is what charges the jump
+            yImpulseJump += 5 * deltaTime;
+            
+            //Change previous state to held, to know when a key is released
+            previousKeyState = "held";
+            
+            //Make the max jumping power 5.4
+            if (yImpulseJump > maxYJumpvelocity) {yImpulseJump = maxYJumpvelocity;}
+            
+            //Make it so you can charge left and right as well
+            if (Gdx.input.isKeyPressed(Input.Keys.D))
+            {
+                xImpulseJump += 5.2 * deltaTime;
+                if (xImpulseJump > maxXJumpvelocity) {xImpulseJump = maxXJumpvelocity;}
+            }
+    
+            if (Gdx.input.isKeyPressed(Input.Keys.A))
+            {
+                xImpulseJump -= 5 * deltaTime;
+                if (xImpulseJump < -maxXJumpvelocity) {xImpulseJump = -maxXJumpvelocity;}
+            }
         }
-
-//        if (Gdx.input.isKeyPressed(Input.Keys.D) && xImpulseJump < 5.0 && (player.b2body.getLinearVelocity().x != 0))
-//        {
-//            xImpulseJump += 1 * deltaTime;
-//            yImpulseJump += 2 * deltaTime;
-//        }
-//        else if (keyUp(Input.Keys.D))
-//        {
-//            player.b2body.applyLinearImpulse(new Vector2(xImpulseJump, yImpulseJump), player.b2body.getWorldCenter(), true);
-//            xImpulseJump = 0;
-//            yImpulseJump = 0;
-//        }
-
+        else if(previousKeyState.equals("held"))
+        {
+            previousKeyState = "released";
+            player.b2body.applyLinearImpulse(new Vector2(xImpulseJump, yImpulseJump), player.b2body.getWorldCenter(), true);
+            xImpulseJump = 0;
+            yImpulseJump = 0;
+            player.setJumping(false);
+        }
 
     }
     

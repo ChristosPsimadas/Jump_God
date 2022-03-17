@@ -24,6 +24,7 @@ public class Mario extends Sprite
     private Animation<TextureRegion> marioJump;
     private float stateTimer;
     private boolean runningRight;
+    private boolean jumping;
     
     public Mario(World world, PlayScreen screen)
     {
@@ -128,10 +129,21 @@ public class Mario extends Sprite
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(6 / Berserk.PPM);
+        fdef.friction = 0.9f;
 
         fdef.shape = shape;
         b2body.createFixture(fdef);
         
         
+    }
+    
+    public boolean isJumping()
+    {
+        return jumping;
+    }
+    
+    public void setJumping(boolean jumping)
+    {
+        this.jumping = jumping;
     }
 }

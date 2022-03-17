@@ -17,6 +17,8 @@ public class B2WorldCreator
         PolygonShape shape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
         Body body;
+        
+        fdef.restitution = 0f;
     
     
         //There must be a corresponding fixture and body for every time in the layers
@@ -24,6 +26,11 @@ public class B2WorldCreator
         //get the layers from the tiled map, get the second index (ground), get the objects in there,
         //then get them by type which is all just rectangles.
         //MapObject because there may be multiple types of objects
+    
+        //2 IS GROUND
+        //3 IS PIPES
+        //4 IS BRICKS
+        //5 IS COINS
         for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class))
         {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
