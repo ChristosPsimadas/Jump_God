@@ -6,6 +6,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.shlad.berserk.Berserk;
+import com.shlad.berserk.Sprites.Brick;
 import com.shlad.berserk.Sprites.Coin;
 
 public class B2WorldCreator
@@ -43,6 +44,7 @@ public class B2WorldCreator
             shape.setAsBox((rect.getWidth() / 2) / Berserk.PPM,
                            (rect.getHeight() / 2) / Berserk.PPM);
             fdef.shape = shape;
+            fdef.friction = 1f;
             body.createFixture(fdef);
         }
     
@@ -58,6 +60,7 @@ public class B2WorldCreator
             shape.setAsBox((rect.getWidth() / 2) / Berserk.PPM ,
                            (rect.getHeight() / 2) / Berserk.PPM);
             fdef.shape = shape;
+            fdef.restitution = 0.8f;
             body.createFixture(fdef);
         }
     
@@ -65,7 +68,7 @@ public class B2WorldCreator
         {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             
-            new Coin(world, map, rect);
+            new Brick(world, map, rect);
         }
     
         for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class))
