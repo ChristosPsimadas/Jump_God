@@ -50,7 +50,7 @@ public class PlayScreen implements Screen
     private float xImpulseJump;
     private float yImpulseJump;
     
-    private final float maxXJumpvelocity = 5f;
+    private final float maxXJumpvelocity = 7f;
     private final float maxYJumpvelocity = 4.8f;
     
     private String previousKeyState = "released";
@@ -60,6 +60,7 @@ public class PlayScreen implements Screen
     public PlayScreen(Berserk game)
     {
         atlas = new TextureAtlas("Mario_and_Enemies.pack");
+        atlas = new TextureAtlas("jumpking.pack");
         
         this.game = game;
         gameCam = new OrthographicCamera();
@@ -104,7 +105,7 @@ public class PlayScreen implements Screen
             //player.b2body.applyLinearImpulse(new Vector2(0.13f, 0), player.b2body.getWorldCenter(), true);
             
             //Move a set speed, no acceleration
-            player.b2body.setLinearVelocity(new Vector2(0.7f, 0));
+            player.b2body.setLinearVelocity(new Vector2(1.1f, 0));
         }
     
     
@@ -113,7 +114,7 @@ public class PlayScreen implements Screen
             //player.b2body.applyLinearImpulse(new Vector2(-0.13f, 0), player.b2body.getWorldCenter(), true);
             
             //move a set speed, no acceleration
-            player.b2body.setLinearVelocity(new Vector2(-0.7f, 0));
+            player.b2body.setLinearVelocity(new Vector2(-1.1f, 0));
         }
         
         
@@ -127,7 +128,7 @@ public class PlayScreen implements Screen
             player.b2body.setLinearVelocity(0,0);
             
             //This is what charges the jump
-            yImpulseJump += 5 * deltaTime;
+            yImpulseJump += 7.2 * deltaTime;
             
             //Change previous state to held, to know when a key is released
             previousKeyState = "held";
@@ -144,7 +145,7 @@ public class PlayScreen implements Screen
     
             if (Gdx.input.isKeyPressed(Input.Keys.A))
             {
-                xImpulseJump -= 5 * deltaTime;
+                xImpulseJump -= 5.2 * deltaTime;
                 if (xImpulseJump < -maxXJumpvelocity) {xImpulseJump = -maxXJumpvelocity;}
             }
         }
