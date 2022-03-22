@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.shlad.berserk.Berserk;
 import com.shlad.berserk.Screens.PlayScreen;
+import com.sun.jndi.ldap.Ber;
 
 public class Mario extends Sprite
 {
@@ -72,7 +73,7 @@ public class Mario extends Sprite
     
     public void update(float dt)
     {
-        setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+        setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2 + 3/ Berserk.PPM);
         setRegion(getFrame(dt));
     }
     
@@ -161,7 +162,7 @@ public class Mario extends Sprite
         
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(15 / Berserk.PPM);
+        shape.setRadius(12 / Berserk.PPM);
         fdef.friction = 1f;
 
         fdef.shape = shape;
