@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="25" height="500" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="1">
- <tileset firstgid="1" source="dirtTiles.tsx"/>
+ <tileset firstgid="1" name="dirtTiles" tilewidth="16" tileheight="16" tilecount="96" columns="16">
+  <image source="platformertiles.png" width="256" height="96"/>
+ </tileset>
  <tileset firstgid="97" source="grassTiles.tsx"/>
+ <tileset firstgid="127" source="castleTiles.tsx"/>
  <layer id="1" name="Objects" width="25" height="500">
   <data encoding="base64" compression="zlib">
-   eJztwQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABPBsNQAAE=
+   eJztzQENAAAMAiAL2r+OBV7gGxQgAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL6qw+FwOAA4DFFxA+o=
   </data>
  </layer>
  <layer id="2" name="Background" width="25" height="500">
   <data encoding="base64" compression="zlib">
-   eJzt0ttKxDAUBdDx+qhgVVBBUEdBH33TP9D5GxVUUL/dBFIMJb1Yh6KyFmwmJUlPJyezGQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEDZwQQ1LieocTNBjbt/UkPPvzyEPKY8FeaX0Y/nkJeU18L8MvrxFvKe8lGY/yv96BP7cThg3fmAtIn9uPrZZ/aK/bgduDa/o233tCT2437g2vyOtt3TkqH9iPI72nZPS35bP8b6Tj/Giv3YCllNWc/GdTZDFh1ZKezJsx1yHLIbUqXffLwXst/4rkXj+SRkp7GnajzPCzlKieOLnv8Ra1yHnHWkrcY87a3Pci2d5UZjHM/idESNPFXLWdTjrnfX+QRVaSGu
+   eJzt1t1KwzAYBuD5e6jgVJiCoM7BPPRA0AsQdOxmVFBBvXYTSKHUtKtbN1SeB16W0mRfly+D9noAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAX3XYYs6wRaY1awcho8Ufs9E45HrJNW5C7pZc4/6f1BisoMZ4BTW66Pm0kqou+vEY8pTynLnfRT9eQl5T3jL3u+jHe8hHymfm/qr+g0ct5l20SJ3Yj8vFHnOm2I/blnPL56fuDOXEfjy0nFs+P3VnKKdtP6Ly+ak7Qzm/rR/z+kk/5hX7sROynrJZGhfZDpk0ZC2zppzdkJOQ/ZB++iyPD3rf31smlevTkL3Kmn7lOvcec5wSx6MZvyPWuAo5b0hdjWFaW+zlRtrLrco47sXZHDXK6dfsRTFu+u4iX+eEJ6E=
   </data>
  </layer>
  <imagelayer id="6" name="Image Layer 1"/>
