@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="25" height="500" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="1">
+ <tileset firstgid="1" source="dirtTiles.tsx"/>
+ <tileset firstgid="97" source="grassTiles.tsx"/>
+ <layer id="1" name="Objects" width="25" height="500">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20PBxQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABPBsNQAAE=
+  </data>
+ </layer>
+ <layer id="2" name="Background" width="25" height="500">
+  <data encoding="base64" compression="zlib">
+   eJzt0ttKxDAUBdDx+qhgVVBBUEdBH33TP9D5GxVUUL/dBFIMJb1Yh6KyFmwmJUlPJyezGQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEDZwQQ1LieocTNBjbt/UkPPvzyEPKY8FeaX0Y/nkJeU18L8MvrxFvKe8lGY/yv96BP7cThg3fmAtIn9uPrZZ/aK/bgduDa/o233tCT2437g2vyOtt3TkqH9iPI72nZPS35bP8b6Tj/Giv3YCllNWc/GdTZDFh1ZKezJsx1yHLIbUqXffLwXst/4rkXj+SRkp7GnajzPCzlKieOLnv8Ra1yHnHWkrcY87a3Pci2d5UZjHM/idESNPFXLWdTjrnfX+QRVaSGu
+  </data>
+ </layer>
+ <imagelayer id="6" name="Image Layer 1"/>
+ <objectgroup id="4" name="Walls"/>
+ <objectgroup id="5" name="Floors"/>
+</map>
