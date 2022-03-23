@@ -1,0 +1,5 @@
+Distance between screens 12 tiles
+
+each tile is 16 pixels
+
+

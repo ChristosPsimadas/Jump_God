@@ -77,5 +77,8 @@ public class B2WorldCreator
             
             new Coin(world, map, rect);
         }
+        
+        
+        
     }
 }
