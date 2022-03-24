@@ -62,6 +62,7 @@ public class PlayScreen implements Screen
     {
         atlas = new TextureAtlas("jumpking.pack");
         
+        
         this.game = game;
         gameCam = new OrthographicCamera();
         gamePort = new FitViewport(Berserk.V_WIDTH / Berserk.PPM, Berserk.V_HEIGHT / Berserk.PPM, gameCam);
