@@ -38,6 +38,7 @@ public class PlayScreen implements Screen
     //Tiled map stuff
     private TmxMapLoader mapLoader;
     private TiledMap map;
+    private TiledMap map2;
     private OrthogonalTiledMapRenderer renderer;
     
     //Box2d stuff
@@ -59,7 +60,6 @@ public class PlayScreen implements Screen
     
     public PlayScreen(Berserk game)
     {
-        atlas = new TextureAtlas("Mario_and_Enemies.pack");
         atlas = new TextureAtlas("jumpking.pack");
         
         this.game = game;
@@ -67,8 +67,8 @@ public class PlayScreen implements Screen
         gamePort = new FitViewport(Berserk.V_WIDTH / Berserk.PPM, Berserk.V_HEIGHT / Berserk.PPM, gameCam);
         hud = new Hud(game.batch);
         mapLoader = new TmxMapLoader();
-        map = mapLoader.load("level1.tmx");
-        renderer = new OrthogonalTiledMapRenderer(map, 1 / Berserk.PPM);
+        map2 = mapLoader.load("mapWIP.tmx");
+        renderer = new OrthogonalTiledMapRenderer(map2, 1 / Berserk.PPM);
         
         
         //Set gamecam to be centered at the start of the map
@@ -79,7 +79,7 @@ public class PlayScreen implements Screen
         world = new World(new Vector2(0, -10), true);
         b2dr = new Box2DDebugRenderer();
         
-        new B2WorldCreator(world, map);
+        new B2WorldCreator(world, map2);
     
         player = new Mario(world, this);
         
@@ -128,7 +128,7 @@ public class PlayScreen implements Screen
             player.b2body.setLinearVelocity(0,0);
             
             //This is what charges the jump
-            yImpulseJump += 7.2 * deltaTime;
+            yImpulseJump += 8.9 * deltaTime;
             
             //Change previous state to held, to know when a key is released
             previousKeyState = "held";
@@ -136,7 +136,7 @@ public class PlayScreen implements Screen
             //Make the max jumping power 5.4
             if (yImpulseJump > maxYJumpvelocity) {yImpulseJump = maxYJumpvelocity;}
             
-            //Make it so you can charge left and right as well
+            //Make it such that you can charge left and right as well
             if (Gdx.input.isKeyPressed(Input.Keys.D))
             {
                 xImpulseJump += 5.2 * deltaTime;
@@ -182,8 +182,11 @@ public class PlayScreen implements Screen
         //For example, if mario is at position 3, then the remainder is 3. The game cam gets set to 2 + 3 - 3, because
         //Mario has not left the screen yet since leaving the screen means passing the 4th mark.
         gameCam.position.x = 2 + (int) player.b2body.getPosition().x - (int) player.b2body.getPosition().x % 4;
+        //gameCam.position.y = (int) player.b2body.getPosition().y - ((((int) player.b2body.getPosition().y * 100) % 208) / 100);
         
-        
+        //Since the height of one screen is 2.08 and we cannot modulo a float, we convert it to an integer 208 by multiplying everything by 100
+        //Then do all modulo divisions, and then divide by 100 at the end
+        gameCam.position.y = 1.04f + (((player.b2body.getPosition().y * 100) - (player.b2body.getPosition().y * 100 % 208)) / 100);
         
         //60 fps, how many times to calculate velocity and position
         //higher num = more precise but slow
@@ -207,15 +210,15 @@ public class PlayScreen implements Screen
         renderer.render();
         
         //render the physics lines
-        b2dr.render(world, gameCam.combined);
+        //b2dr.render(world, gameCam.combined);
         
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         player.draw(game.batch);
         game.batch.end();
         
-        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-        hud.stage.draw();
+        //game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+        //hud.stage.draw();
     }
     
     @Override

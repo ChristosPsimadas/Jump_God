@@ -21,30 +21,23 @@ public class B2WorldCreator
         
         fdef.restitution = 0f;
     
-    
-        //There must be a corresponding fixture and body for every time in the layers
-        //Eg the pipes, coins and ground
-        //get the layers from the tiled map, get the second index (ground), get the objects in there,
-        //then get them by type which is all just rectangles.
-        //MapObject because there may be multiple types of objects
-    
-        //2 IS GROUND
-        //3 IS PIPES
-        //4 IS BRICKS
-        //5 IS COINS
+        //2 is wall
+        //3 is Floor
+        //4 is ceiling
+        
         for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class))
         {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             bDef.type = BodyDef.BodyType.StaticBody;
             bDef.position.set((rect.getX() + rect.getWidth() / 2) / Berserk.PPM,
                               (rect.getY() + rect.getHeight() / 2) / Berserk.PPM);
-        
+            
             body = world.createBody(bDef);
-        
+
             shape.setAsBox((rect.getWidth() / 2) / Berserk.PPM,
                            (rect.getHeight() / 2) / Berserk.PPM);
             fdef.shape = shape;
-            fdef.friction = 1f;
+            fdef.restitution = 0.5f;
             body.createFixture(fdef);
         }
     
@@ -57,26 +50,70 @@ public class B2WorldCreator
         
             body = world.createBody(bDef);
         
-            shape.setAsBox((rect.getWidth() / 2) / Berserk.PPM ,
+            shape.setAsBox((rect.getWidth() / 2) / Berserk.PPM,
                            (rect.getHeight() / 2) / Berserk.PPM);
             fdef.shape = shape;
-            fdef.restitution = 0.8f;
+            fdef.restitution = 0.3f;
+            fdef.friction = 1f;
+            
             body.createFixture(fdef);
         }
     
-        for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class))
-        {
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            
-            new Brick(world, map, rect);
-        }
+        //There must be a corresponding fixture and body for every time in the layers
+        //Eg the pipes, coins and ground
+        //get the layers from the tiled map, get the second index (ground), get the objects in there,
+        //then get them by type which is all just rectangles.
+        //MapObject because there may be multiple types of objects
     
-        for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class))
-        {
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            
-            new Coin(world, map, rect);
-        }
+        //2 IS GROUND
+        //3 IS PIPES
+        //4 IS BRICKS
+        //5 IS COINS
+//        for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class))
+//        {
+//            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+//            bDef.type = BodyDef.BodyType.StaticBody;
+//            bDef.position.set((rect.getX() + rect.getWidth() / 2) / Berserk.PPM,
+//                              (rect.getY() + rect.getHeight() / 2) / Berserk.PPM);
+//
+//            body = world.createBody(bDef);
+//
+//            shape.setAsBox((rect.getWidth() / 2) / Berserk.PPM,
+//                           (rect.getHeight() / 2) / Berserk.PPM);
+//            fdef.shape = shape;
+//            fdef.friction = 1f;
+//            body.createFixture(fdef);
+//        }
+//
+//        for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class))
+//        {
+//            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+//            bDef.type = BodyDef.BodyType.StaticBody;
+//            bDef.position.set((rect.getX() + rect.getWidth() / 2) / Berserk.PPM,
+//                              (rect.getY() + rect.getHeight() / 2) / Berserk.PPM);
+//
+//            body = world.createBody(bDef);
+//
+//            shape.setAsBox((rect.getWidth() / 2) / Berserk.PPM ,
+//                           (rect.getHeight() / 2) / Berserk.PPM);
+//            fdef.shape = shape;
+//            fdef.restitution = 0.8f;
+//            body.createFixture(fdef);
+//        }
+//
+//        for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class))
+//        {
+//            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+//
+//            new Brick(world, map, rect);
+//        }
+//
+//        for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class))
+//        {
+//            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+//
+//            new Coin(world, map, rect);
+//        }
         
         
         
