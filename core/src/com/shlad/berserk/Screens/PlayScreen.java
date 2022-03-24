@@ -203,7 +203,7 @@ public class PlayScreen implements Screen
         update(delta);
         
         //Clear the screen and make it light blue
-        Gdx.gl.glClearColor(0.4f, 0.4f, 0.8f, 1);
+        Gdx.gl.glClearColor(0.35f, 0.35f, 0.8f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
         //render the game map
