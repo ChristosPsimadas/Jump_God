@@ -10,32 +10,30 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.shlad.berserk.Berserk;
 import com.shlad.berserk.Screens.PlayScreen;
-import com.sun.jndi.ldap.Ber;
 
-public class Mario extends Sprite
+public class JumpGod extends Sprite
 {
 
-    public enum AnimationState {FALLING, JUMPING, STANDING, RUNNING, CHARGING, DOWNED};
+    public enum AnimationState {FALLING, JUMPING, STANDING, RUNNING, CHARGING}
+    
     public AnimationState currentState;
     public AnimationState previousState;
     
     public World world;
     public Body b2body;
-    private TextureRegion marioStand;
-    private TextureRegion marioJump;
-    private TextureRegion marioBouncing;
-    private TextureRegion marioFall;
-    private TextureRegion marioDowned;
+    private final TextureRegion jumpKingStand;
+    private final TextureRegion jumpKingJump;
+    private final TextureRegion jumpKingFall;
     
-    private Animation<TextureRegion> marioCharging;
-    private Animation<TextureRegion> marioRun;
+    private final Animation<TextureRegion> jumpKingCharging;
+    private final Animation<TextureRegion> jumpKingRun;
     private float stateTimer;
     private boolean runningRight;
     private boolean jumping;
     
-    public Mario(World world, PlayScreen screen)
+    public JumpGod(World world, PlayScreen screen)
     {
-        //on the spritemap mario is called little mario
+        //on the sprite map jumpKing is called little jumpKing
         super(screen.getAtlas().findRegion("jumpking"));
         
         this.world = world;
@@ -45,30 +43,26 @@ public class Mario extends Sprite
         stateTimer = 0;
         runningRight = true;
         
-        Array<TextureRegion> frames = new Array<TextureRegion>();
+        Array<TextureRegion> frames = new Array<>();
         for(int i = 1; i < 4; i++) {frames.add(new TextureRegion(getTexture(), 1 + i * 32, 1, 32, 32));}
-        marioRun = new Animation<TextureRegion>(0.1f, frames);
+        jumpKingRun = new Animation<>(0.1f, frames);
         frames.clear();
     
         for(int i = 1; i < 4; i++) {frames.add(new TextureRegion(getTexture(), 129, 1, 32, 32));}
-        marioCharging = new Animation<TextureRegion>(0.1f, frames);
+        jumpKingCharging = new Animation<>(0.1f, frames);
         frames.clear();
         
-        marioFall =     new TextureRegion(getTexture(), 193, 1, 32, 32);
+        jumpKingFall =     new TextureRegion(getTexture(), 193, 1, 32, 32);
         
-        marioJump =     new TextureRegion(getTexture(), 161, 1, 32, 32);
-        
-        marioBouncing = new TextureRegion(getTexture(), 256, 1, 32, 32);
+        jumpKingJump =     new TextureRegion(getTexture(), 161, 1, 32, 32);
     
-        marioStand =    new TextureRegion(getTexture(), 1  , 1, 32, 32);
+        jumpKingStand =    new TextureRegion(getTexture(), 1  , 1, 32, 32);
         
-        marioDowned =   new TextureRegion(getTexture(), 225, 1, 32, 32);
-        
-        defineMario();
+        definejumpKing();
         
         setBounds(0, 0, 32 / Berserk.PPM, 32 / Berserk.PPM);
-        setRegion(marioStand);
-        //mario extends sprite which extends Texture region, so it fulfills the req because it takes a textureregion
+        setRegion(jumpKingStand);
+        //jumpKing extends sprite which extends Texture region, so it fulfills the req because it takes a texture region
     }
     
     public void update(float dt)
@@ -85,29 +79,25 @@ public class Mario extends Sprite
         switch (currentState)
         {
             case JUMPING:
-                //statetimer determines which of the frames that the animation is currently in
-                region = marioJump;
+                //state-timer determines which of the frames that the animation is currently in
+                region = jumpKingJump;
                 break;
                 
             case RUNNING:
-                region = marioRun.getKeyFrame(stateTimer, true);
+                region = jumpKingRun.getKeyFrame(stateTimer, true);
                 break;
                 
             case FALLING:
-                region = marioFall;
-                break;
-                
-            case DOWNED:
-                region = marioDowned;
+                region = jumpKingFall;
                 break;
                 
             case CHARGING:
-                region = marioCharging.getKeyFrame(stateTimer, true);
+                region = jumpKingCharging.getKeyFrame(stateTimer, true);
                 break;
                 
             case STANDING:
             default:
-                region = marioStand;
+                region = jumpKingStand;
                 break;
         }
         //region.isFlipx() returns if the actual sprite is flipped
@@ -117,13 +107,13 @@ public class Mario extends Sprite
             runningRight = false;
             
         }
-        //Hes facing left but running right
+        //He's facing left but running right
         else if ((b2body.getLinearVelocity().x > 0 || runningRight) && region.isFlipX())
         {
             region.flip(true, false);
             runningRight = true;
         }
-        //does current state equal previous state? if it does statetimer + dt, if not statetimer = 0
+        //does current state equal previous state? if it does state timer + dt, if not state timer = 0
         //resets timer at animation switch
         stateTimer = currentState == previousState ? stateTimer + dt : 0;
         previousState = currentState;
@@ -144,14 +134,11 @@ public class Mario extends Sprite
         else if (Gdx.input.isKeyPressed(Input.Keys.W))
             return AnimationState.CHARGING;
         
-        else if (b2body.getLinearVelocity().y == 0 && previousState == AnimationState.JUMPING)
-            return AnimationState.DOWNED;
-        
         else
             return AnimationState.STANDING;
     }
     
-    public void defineMario()
+    public void definejumpKing()
     {
         BodyDef bdef = new BodyDef();
         bdef.position.set(200 / Berserk.PPM, 40 / Berserk.PPM);

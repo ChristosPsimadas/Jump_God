@@ -1,10 +1,7 @@
 package com.shlad.berserk;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.shlad.berserk.Screens.PlayScreen;
 
 public class Berserk extends Game

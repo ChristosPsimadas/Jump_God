@@ -2,51 +2,42 @@ package com.shlad.berserk.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.shlad.berserk.Berserk;
-import com.shlad.berserk.Scenes.Hud;
-import com.shlad.berserk.Sprites.Mario;
+import com.shlad.berserk.Sprites.JumpGod;
 import com.shlad.berserk.Tools.B2WorldCreator;
-import com.sun.jndi.ldap.Ber;
 
 public class PlayScreen implements Screen
 {
-    private Berserk game;
-    private TextureAtlas atlas;
+    private final Berserk game;
+    private final TextureAtlas atlas;
     
-    private OrthographicCamera gameCam;
-    private Viewport gamePort;
-    private Hud hud;
+    private final OrthographicCamera gameCam;
+    private final Viewport gamePort;
     
     //Tiled map stuff
-    private TmxMapLoader mapLoader;
-    private TiledMap map;
-    private TiledMap map2;
-    private OrthogonalTiledMapRenderer renderer;
+    private final TmxMapLoader mapLoader;
+    private final TiledMap map2;
+    private final OrthogonalTiledMapRenderer renderer;
     
     //Box2d stuff
-    private World world;
+    private final World world;
     //shows us fixtures and rigid bodies, so we see what's going on
-    private Box2DDebugRenderer b2dr;
+    private final Box2DDebugRenderer b2dr;
     
-    private Mario player;
+    private final JumpGod player;
 
     private float xImpulseJump;
     private float yImpulseJump;
@@ -56,7 +47,8 @@ public class PlayScreen implements Screen
     
     private String previousKeyState = "released";
 
-
+    private final Music backgroundMusic;
+    private final Texture backgroundTexture;
     
     public PlayScreen(Berserk game)
     {
@@ -66,14 +58,15 @@ public class PlayScreen implements Screen
         this.game = game;
         gameCam = new OrthographicCamera();
         gamePort = new FitViewport(Berserk.V_WIDTH / Berserk.PPM, Berserk.V_HEIGHT / Berserk.PPM, gameCam);
-        hud = new Hud(game.batch);
         mapLoader = new TmxMapLoader();
         map2 = mapLoader.load("mapWIP.tmx");
         renderer = new OrthogonalTiledMapRenderer(map2, 1 / Berserk.PPM);
         
+        backgroundTexture = new Texture("stringstar fields/background_0.png");
+        backgroundTexture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         
         //Set gamecam to be centered at the start of the map
-        //still should use this even tho its centered on mario because it centers the y height
+        //still should use this even tho it's centered on jumpKing because it centers the y height
         gameCam.position.set(gamePort.getWorldWidth() / 2.0f, gamePort.getWorldHeight() / 2.0f, 0);
         
         //Gravity , sleep objects at rest
@@ -82,7 +75,11 @@ public class PlayScreen implements Screen
         
         new B2WorldCreator(world, map2);
     
-        player = new Mario(world, this);
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("backgroundSound.mp3"));
+        backgroundMusic.setLooping(true);
+        backgroundMusic.play();
+        
+        player = new JumpGod(world, this);
         
     }
     
@@ -101,28 +98,25 @@ public class PlayScreen implements Screen
     {
         //No moving in the air
 
-        if (Gdx.input.isKeyPressed(Input.Keys.D) && (player.b2body.getLinearVelocity().x <= 1.8f) && (!player.isJumping()) && (player.b2body.getLinearVelocity().y == 0))
+        if (Gdx.input.isKeyPressed(Input.Keys.D) && (player.b2body.getLinearVelocity().x <= 1.8f)
+                && (!player.isJumping()) && (player.b2body.getLinearVelocity().y == 0))
         {
-            //player.b2body.applyLinearImpulse(new Vector2(0.13f, 0), player.b2body.getWorldCenter(), true);
-            
             //Move a set speed, no acceleration
             player.b2body.setLinearVelocity(new Vector2(1.1f, 0));
         }
     
     
-        if (Gdx.input.isKeyPressed(Input.Keys.A) && (player.b2body.getLinearVelocity().x >= -1.8f) && (!player.isJumping()) && (player.b2body.getLinearVelocity().y == 0))
+        if (Gdx.input.isKeyPressed(Input.Keys.A) && (player.b2body.getLinearVelocity().x >= -1.8f)
+                && (!player.isJumping()) && (player.b2body.getLinearVelocity().y == 0))
         {
-            //player.b2body.applyLinearImpulse(new Vector2(-0.13f, 0), player.b2body.getWorldCenter(), true);
-            
             //move a set speed, no acceleration
             player.b2body.setLinearVelocity(new Vector2(-1.1f, 0));
         }
         
-        
         if (Gdx.input.isKeyPressed(Input.Keys.W) && (player.b2body.getLinearVelocity().y == 0))
         {
             //Make the setJumping boolean true
-            //So that you cant move left or right when charging your jump
+            //So that you can't move left or right when charging your jump
             player.setJumping(true);
             
             //Make your character stop completely in place when charging a jump
@@ -167,25 +161,15 @@ public class PlayScreen implements Screen
         player.update(deltaTime);
         //user input first
         handleInput(deltaTime);
-
-        
-//      gameCam.position.x = player.b2body.getPosition().x;
-//      if you want the cam to track the y as well then do
-//      position.y = getPos.y
-        
-//        if (gameCam.position.x < player.b2body.getPosition().x - 2.0)
-//        {
-//            gameCam.position.x += 4.0;
-//        }
         
         
         //Makes it such that the camera follows the player, but only in multiple-of-4 increments
-        //For example, if mario is at position 3, then the remainder is 3. The game cam gets set to 2 + 3 - 3, because
-        //Mario has not left the screen yet since leaving the screen means passing the 4th mark.
+        //For example, if jumpKing is at position 3, then the remainder is 3. The game cam gets set to 2 + 3 - 3, because
+        //jumpKing has not left the screen yet since leaving the screen means passing the 4th mark.
         gameCam.position.x = 2 + (int) player.b2body.getPosition().x - (int) player.b2body.getPosition().x % 4;
         //gameCam.position.y = (int) player.b2body.getPosition().y - ((((int) player.b2body.getPosition().y * 100) % 208) / 100);
         
-        //Since the height of one screen is 2.08 and we cannot modulo a float, we convert it to an integer 208 by multiplying everything by 100
+        //Since the height of one screen is 2.08, and we cannot modulo a float, we convert it to an integer 208 by multiplying everything by 100
         //Then do all modulo divisions, and then divide by 100 at the end
         gameCam.position.y = 1.04f + (((player.b2body.getPosition().y * 100) - (player.b2body.getPosition().y * 100 % 208)) / 100);
         
@@ -206,20 +190,22 @@ public class PlayScreen implements Screen
         //Clear the screen and make it light blue
         Gdx.gl.glClearColor(0.35f, 0.35f, 0.8f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
+    
+        game.batch.setProjectionMatrix(gameCam.combined);
+        game.batch.begin();
+        game.batch.draw(backgroundTexture, 0, gameCam.position.y - 1.04f, gameCam.viewportWidth, gameCam.viewportHeight);
+        game.batch.end();
         //render the game map
         renderer.render();
         
         //render the physics lines
         //b2dr.render(world, gameCam.combined);
         
-        game.batch.setProjectionMatrix(gameCam.combined);
+        
         game.batch.begin();
         player.draw(game.batch);
         game.batch.end();
-        
-        //game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-        //hud.stage.draw();
+
     }
     
     @Override
@@ -249,10 +235,10 @@ public class PlayScreen implements Screen
     @Override
     public void dispose()
     {
-        map.dispose();
         renderer.dispose();
         world.dispose();
         b2dr.dispose();
-        hud.dispose();
+        backgroundMusic.dispose();
+        backgroundTexture.dispose();
     }
 }
