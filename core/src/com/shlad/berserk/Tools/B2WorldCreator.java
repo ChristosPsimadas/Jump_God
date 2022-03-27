@@ -19,8 +19,9 @@ public class B2WorldCreator
         
         fdef.restitution = 0f;
     
-        //3 is wall
-        //4 is Floor
+        //2 is wall
+        //3 is Floor
+        //4 is the dollar
         for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class))
         {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();

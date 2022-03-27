@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.shlad.berserk.Berserk;
 import com.shlad.berserk.Sprites.JumpGod;
 import com.shlad.berserk.Tools.B2WorldCreator;
+import com.shlad.berserk.Tools.Timer;
 
 public class PlayScreen implements Screen
 {
@@ -50,6 +51,13 @@ public class PlayScreen implements Screen
     private final Music backgroundMusic;
     private final Texture backgroundTexture;
     
+    private final Timer timer;
+    
+    public static boolean won = false;
+    
+    private final Texture winText;
+    private final Music music;
+    
     public PlayScreen(Berserk game)
     {
         atlas = new TextureAtlas("jumpking.pack");
@@ -61,6 +69,11 @@ public class PlayScreen implements Screen
         mapLoader = new TmxMapLoader();
         map2 = mapLoader.load("mapWIP.tmx");
         renderer = new OrthogonalTiledMapRenderer(map2, 1 / Berserk.PPM);
+        
+        timer = new Timer(game.batch);
+        winText = new Texture(Gdx.files.internal("congratulations.png"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("congratulations.mp3"));
+        music.setLooping(false);
         
         backgroundTexture = new Texture("stringstar fields/background_0.png");
         backgroundTexture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
@@ -155,12 +168,20 @@ public class PlayScreen implements Screen
 
     }
     
+    public void checkWin()
+    {
+        
+        if (player.b2body.getPosition().y > 13.85 && player.b2body.getPosition().x > 1.5 && player.b2body.getPosition().x < 2) {won = true;}
+    }
+    
     //update the game world
     public void update(float deltaTime)
     {
         player.update(deltaTime);
         //user input first
         handleInput(deltaTime);
+        
+        timer.setTime(deltaTime);
         
         
         //Makes it such that the camera follows the player, but only in multiple-of-4 increments
@@ -179,6 +200,8 @@ public class PlayScreen implements Screen
         
         gameCam.update();
         renderer.setView(gameCam);
+        
+        checkWin();
     }
     
     @Override
@@ -191,20 +214,40 @@ public class PlayScreen implements Screen
         Gdx.gl.glClearColor(0.35f, 0.35f, 0.8f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     
-        game.batch.setProjectionMatrix(gameCam.combined);
-        game.batch.begin();
-        game.batch.draw(backgroundTexture, 0, gameCam.position.y - 1.04f, gameCam.viewportWidth, gameCam.viewportHeight);
-        game.batch.end();
-        //render the game map
-        renderer.render();
-        
-        //render the physics lines
-        //b2dr.render(world, gameCam.combined);
-        
-        
-        game.batch.begin();
-        player.draw(game.batch);
-        game.batch.end();
+        if (!won)
+        {
+            game.batch.setProjectionMatrix(gameCam.combined);
+            game.batch.begin();
+            game.batch.draw(backgroundTexture, 0, gameCam.position.y - 1.04f, gameCam.viewportWidth, gameCam.viewportHeight);
+            game.batch.end();
+            //render the game map
+            renderer.render();
+    
+            //render the physics lines
+            //b2dr.render(world, gameCam.combined);
+    
+    
+            game.batch.begin();
+            player.draw(game.batch);
+            game.batch.end();
+    
+            game.batch.setProjectionMatrix(timer.stage.getCamera().combined);
+            timer.stage.draw();
+        }
+        else
+        {
+            backgroundMusic.stop();
+            if (!music.isPlaying())
+            {
+                music.play();
+            }
+    
+            game.batch.setProjectionMatrix(gameCam.combined);
+            game.batch.begin();
+            game.batch.draw(winText, 0, gameCam.position.y - 1.04f, gameCam.viewportWidth, gameCam.viewportHeight);
+            game.batch.end();
+            timer.stage.draw();
+        }
 
     }
     
@@ -240,5 +283,6 @@ public class PlayScreen implements Screen
         b2dr.dispose();
         backgroundMusic.dispose();
         backgroundTexture.dispose();
+        timer.dispose();
     }
 }

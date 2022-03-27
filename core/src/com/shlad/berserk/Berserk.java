@@ -13,6 +13,7 @@ public class Berserk extends Game
 	
 	public SpriteBatch batch;
 	
+	
 	@Override
 	public void create ()
 	{
