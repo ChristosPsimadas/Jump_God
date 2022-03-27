@@ -24,7 +24,7 @@ public class Timer implements Disposable
     private Integer time;
     float timeCheckNum;
     
-    private Label countDownLabel;
+    private final Label countDownLabel;
     
     public Timer(SpriteBatch sb)
     {
@@ -55,11 +55,6 @@ public class Timer implements Disposable
             timeCheckNum = 0;
         }
         countDownLabel.setText(String.format("%03d", time));
-    }
-    
-    public Integer getTime()
-    {
-        return time;
     }
     
     @Override
