@@ -31,6 +31,21 @@ public class JumpGod extends Sprite
     private boolean runningRight;
     private boolean jumping;
     
+    public String toString()
+    {
+        return "x: " + (this.b2body.getPosition().x) + " y: " + (this.b2body.getPosition().y);
+    }
+    
+    public boolean equals(Object other)
+    {
+        if (other != null)
+        {
+            return false;
+        }
+        return false;
+        //No players are equal to each other. Not even itself.
+    }
+    
     public JumpGod(World world, PlayScreen screen)
     {
         //on the sprite map jumpKing is called little jumpKing
